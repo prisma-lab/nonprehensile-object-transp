@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<robot name="planar_end_eff" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="planar_end_eff_gazebo" params="name">
+
+    <gazebo reference="${name}_link">
+      <material>Gazebo/DarkGrey</material>
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <kp value="1e6" />
+  	  <kd value="1e3" />
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>
+

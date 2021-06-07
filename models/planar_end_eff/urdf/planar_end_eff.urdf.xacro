@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller" 
+xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Import all Gazebo-customization elements, including Gazebo colors -->
+  <xacro:include filename="$(find planar_end_eff)/urdf/planar_end_eff.gazebo.xacro" />
+
+  <xacro:macro name="planar_end_eff_visual" params="name material">
+     <visual>
+       <geometry>
+          <mesh filename="package://planar_end_eff/meshes/visual/${name}_visual.stl" />
+       </geometry>
+       <material name="${material}"/>
+     </visual>
+  </xacro:macro>
+
+  <xacro:macro name="planar_end_eff_collision" params="name material">
+     <collision>
+       <origin rpy="0 0 0" xyz="0 0 0.008"/>
+       <geometry>
+	        <box size="0.2 0.2 0.016" />
+          <!--mesh filename="package://planar_end_eff/meshes/collision/${name}_collision.stl" /-->
+       </geometry>
+       <material name="${material}"/>
+     </collision>     
+  </xacro:macro>
+
+  <xacro:macro name="planar_end_eff" params="parent_link name *origin">
+    <joint name="${name}_fixed_base_joint" type="fixed">
+       <xacro:insert_block name="origin"/>
+       <child link="${name}_link" />
+       <parent link="${parent_link}"/>
+    </joint>
+	
+   <gazebo reference="${name}_fixed_base_joint">
+     <provideFeedback>true</provideFeedback>
+     <disableFixedJointLumping>true</disableFixedJointLumping>
+   </gazebo>
+
+	<!-- The ft_sensor plugin -->  
+   <gazebo>
+      <plugin name="ft_sensor" filename="libgazebo_ros_ft_sensor.so">
+      <updateRate>100.0</updateRate>
+      <topicName>ft_sensor_topic</topicName>
+      <jointName>planar_end_eff_fixed_base_joint</jointName>
+      </plugin>
+   </gazebo>
+
+    <link name="${name}_link">
+      <xacro:planar_end_eff_visual name="planar_end_eff" material="Black"/>
+      <xacro:planar_end_eff_collision name="planar_end_eff" material="Black"/>  
+
+      <inertial>
+        <!-- Measured mass value -->
+        <mass value="1" />
+        <inertia 
+         ixx="0.01" ixy="0.0" ixz="0.0" 
+         iyy="0.01" iyz="0.0" 
+         izz="0.1" />
+      </inertial>
+    </link>
+    
+    <!--Extensions -->
+    <xacro:planar_end_eff_gazebo name="${name}"/>
+
+  </xacro:macro>
+
+</robot>

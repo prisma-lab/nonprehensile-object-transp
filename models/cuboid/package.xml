@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package>
+  <name>cuboid</name>
+  <version>1.0.0</version>
+  <description>This package contains the model files for cuboid object</description>
+
+  <maintainer email="mar.selvaggio@gmail.com">Mario Selvaggio</maintainer>
+  <author email="mar.selvaggio@gmail.com">Mario Selvaggio</author>
+
+  <license>GPL</license>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>

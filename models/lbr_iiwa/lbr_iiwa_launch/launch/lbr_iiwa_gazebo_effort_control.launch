@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<launch>
+<!--Convenience launch file to start gazebo + control--> 
+
+<!--The hardware_interface parameter determines which hardware inteface is used-->
+<include file="$(find lbr_iiwa_gazebo)/launch/lbr_iiwa_world.launch">
+  <arg name="hardware_interface" value="hardware_interface/EffortJointInterface" />
+</include>
+
+<include file="$(find lbr_iiwa_control)/launch/lbr_iiwa_control.launch">
+  <arg name="hardware_interface" value="hardware_interface/EffortJointInterface" />
+  <arg name="controllers" value="joint_state_controller
+			         lbr_iiwa_joint_1_effort_controller
+				 	 lbr_iiwa_joint_2_effort_controller
+				 	 lbr_iiwa_joint_3_effort_controller
+				 	 lbr_iiwa_joint_4_effort_controller
+				 	 lbr_iiwa_joint_5_effort_controller
+				 	 lbr_iiwa_joint_6_effort_controller
+				 	 lbr_iiwa_joint_7_effort_controller" />
+</include>
+
+</launch>

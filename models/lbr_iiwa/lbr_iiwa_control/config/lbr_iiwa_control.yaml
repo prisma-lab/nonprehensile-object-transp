@@ -1,0 +1,132 @@
+#lbr_iiwa:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 1000  
+  
+  # Effort Position Controllers ---------------------------------------
+  lbr_iiwa_joint_1_effort_pos_controller:
+    type: effort_controllers/JointPositionController
+    joint: lbr_iiwa_joint_1
+    pid: {p: 800.0, i: 100, d: 80.0, i_clamp_min: -10000, i_clamp_max: 10000}
+
+  lbr_iiwa_joint_2_effort_pos_controller:
+    type: effort_controllers/JointPositionController
+    joint: lbr_iiwa_joint_2
+    pid: {p: 800.0, i: 1000, d: 100.0, i_clamp_min: -10000, i_clamp_max: 10000}
+
+  lbr_iiwa_joint_3_effort_pos_controller:
+    type: effort_controllers/JointPositionController
+    joint: lbr_iiwa_joint_3
+    pid: {p: 800.0, i: 10, d: 5.0, i_clamp_min: -10000, i_clamp_max: 10000}
+
+  lbr_iiwa_joint_4_effort_pos_controller:
+    type: effort_controllers/JointPositionController
+    joint: lbr_iiwa_joint_4
+    pid: {p: 800.0, i: 10, d: 80.0, i_clamp_min: -10000, i_clamp_max: 10000}
+
+  lbr_iiwa_joint_5_effort_pos_controller:
+    type: effort_controllers/JointPositionController
+    joint: lbr_iiwa_joint_5
+    pid: {p: 300.0, i: 5, d: 10.0, i_clamp_min: -10000, i_clamp_max: 10000}
+
+  lbr_iiwa_joint_6_effort_pos_controller:
+    type: effort_controllers/JointPositionController
+    joint: lbr_iiwa_joint_6
+    pid: {p: 50.0, i: 1, d: 1.0, i_clamp_min: -10000, i_clamp_max: 10000}
+
+  lbr_iiwa_joint_7_effort_pos_controller:
+    type: effort_controllers/JointPositionController
+    joint: lbr_iiwa_joint_7
+    pid: {p: 10.0, i: 0.1, d: 1.0, i_clamp_min: -10000, i_clamp_max: 10000}
+
+  # Forward Position Controllers ---------------------------------------
+  lbr_iiwa_joint_1_forward_pos_controller:
+    type: position_controllers/JointPositionController
+    joint: lbr_iiwa_joint_1
+
+  lbr_iiwa_joint_2_forward_pos_controller:
+    type: position_controllers/JointPositionController
+    joint: lbr_iiwa_joint_2
+
+  lbr_iiwa_joint_3_forward_pos_controller:
+    type: position_controllers/JointPositionController
+    joint: lbr_iiwa_joint_3
+
+  lbr_iiwa_joint_4_forward_pos_controller:
+    type: position_controllers/JointPositionController
+    joint: lbr_iiwa_joint_4
+
+  lbr_iiwa_joint_5_forward_pos_controller:
+    type: position_controllers/JointPositionController
+    joint: lbr_iiwa_joint_5
+
+  lbr_iiwa_joint_6_forward_pos_controller:
+    type: position_controllers/JointPositionController
+    joint: lbr_iiwa_joint_6
+
+  lbr_iiwa_joint_7_forward_pos_controller:
+    type: position_controllers/JointPositionController
+    joint: lbr_iiwa_joint_7
+
+  # Forward Velocity Controllers ---------------------------------------
+  lbr_iiwa_joint_1_forward_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: lbr_iiwa_joint_1
+
+  lbr_iiwa_joint_2_forward_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: lbr_iiwa_joint_2
+
+  lbr_iiwa_joint_3_forward_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: lbr_iiwa_joint_3
+
+  lbr_iiwa_joint_4_forward_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: lbr_iiwa_joint_4
+
+  lbr_iiwa_joint_5_forward_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: lbr_iiwa_joint_5
+
+  lbr_iiwa_joint_6_forward_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: lbr_iiwa_joint_6
+
+  lbr_iiwa_joint_7_forward_vel_controller:
+    type: velocity_controllers/JointVelocityController
+    joint: lbr_iiwa_joint_7
+
+
+  # Effort Controllers ---------------------------------------
+  lbr_iiwa_joint_1_effort_controller:
+    type: effort_controllers/JointEffortController
+    joint: lbr_iiwa_joint_1
+
+  lbr_iiwa_joint_2_effort_controller:
+    type: effort_controllers/JointEffortController
+    joint: lbr_iiwa_joint_2
+
+  lbr_iiwa_joint_3_effort_controller:
+    type: effort_controllers/JointEffortController
+    joint: lbr_iiwa_joint_3
+
+  lbr_iiwa_joint_4_effort_controller:
+    type: effort_controllers/JointEffortController
+    joint: lbr_iiwa_joint_4
+
+  lbr_iiwa_joint_5_effort_controller:
+    type: effort_controllers/JointEffortController
+    joint: lbr_iiwa_joint_5
+
+  lbr_iiwa_joint_6_effort_controller:
+    type: effort_controllers/JointEffortController
+    joint: lbr_iiwa_joint_6
+
+  lbr_iiwa_joint_7_effort_controller:
+    type: effort_controllers/JointEffortController
+    joint: lbr_iiwa_joint_7
+
+
+

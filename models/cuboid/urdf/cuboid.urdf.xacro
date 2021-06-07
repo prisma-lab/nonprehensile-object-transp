@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller" 
+xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Import all Gazebo-customization elements, including Gazebo colors -->
+  <xacro:include filename="$(find cuboid)/urdf/cuboid.gazebo.xacro" />
+
+  <xacro:macro name="cuboid_visual" params="name material origin">
+     <visual>
+      <xacro:insert_block name="origin"/>
+       <geometry>
+          <mesh filename="package://cuboid/meshes/visual/cube.dae" />
+       </geometry>
+       <material name="${material}"/>
+     </visual>
+  </xacro:macro>
+
+  <xacro:macro name="cuboid_collision" params="name material origin">
+     <collision>
+       <xacro:insert_block name="origin"/>
+       <geometry>
+	        <box size="0.04 0.04 0.04" />
+       </geometry>
+       <material name="${material}"/>
+     </collision>     
+  </xacro:macro>
+
+  <xacro:macro name="cuboid" params="name *origin">
+    <joint name="${name}_floating_joint" type="floating">
+       <xacro:insert_block name="origin"/>
+       <child link="${name}_link" />
+       <parent link="world"/>
+    </joint>
+  
+    <link name="${name}_link">
+      <xacro:cuboid_visual name="${name}_visual" material="Red" origin="*origin"/>
+      <xacro:cuboid_collision name="${name}_collision" material="Red" origin="*origin"/>  
+      <inertial>
+        <xacro:insert_block name="origin"/>
+        <!-- Measured mass value -->
+        <mass value="0.1" />
+        <inertia 
+         ixx="0.0001" ixy="0.0" ixz="0.0" 
+         iyy="0.0001" iyz="0.0" 
+         izz="0.0001" />
+      </inertial>
+    </link>
+    
+    <!--Extensions -->
+    <xacro:cuboid_gazebo name="${name}"/>
+
+  </xacro:macro>
+
+</robot>
