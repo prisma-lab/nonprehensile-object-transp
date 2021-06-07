@@ -9,7 +9,7 @@ Implementation of the nonprehensile object transportation method developed in th
 
 ### Citing
 ```
-@article{torrente2021data,
+@article{SelvaggioTRO2021,
   title={A Shared-control Teleoperation Architecture for Nonprehensile Object Transportation},
   author={Selvaggio, Mario and Cacace, Jonathan and Pacchierotti, Claudio and Ruggiero, Fabio and Robuffo Giordano, Paolo},
   journal={IEEE Transactions on Robotics (in press)},
