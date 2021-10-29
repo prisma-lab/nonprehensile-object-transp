@@ -219,7 +219,7 @@ int main(int argc, char **argv)
     robot.addEE(f_T_ee);
 
     // Create object
-    double frictionCoeff = 1;
+    double frictionCoeff = 0.5;
     std::vector<KDL::Frame> contacts(4);
     contacts.at(0).p = KDL::Vector(-0.02, 0.02,-0.02);
     contacts.at(1).p = KDL::Vector(0.02, 0.02,-0.02);
