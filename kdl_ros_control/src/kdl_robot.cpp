@@ -230,6 +230,11 @@ KDL::Frame KDLRobot::getEEFrame()
     return s_F_ee_;
 }
 
+KDL::Frame KDLRobot::getEEObj()
+{
+    return ee_F_obj_;
+}
+
 KDL::Twist KDLRobot::getEEVelocity()
 {
     return s_V_ee_;

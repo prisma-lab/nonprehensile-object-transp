@@ -34,7 +34,10 @@ public:
     unsigned int getNrJnts();
     unsigned int getNrSgmts();
     void addEE(const KDL::Frame &_f_tip);
+    
+    // object
     void addObj(KDLObject &_obj);
+    KDL::Frame getEEObj();
 
     // joints
     Eigen::MatrixXd getJntLimits();

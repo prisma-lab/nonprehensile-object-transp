@@ -219,7 +219,7 @@ int main(int argc, char **argv)
     robot.addEE(f_T_ee);
 
     // Create object
-    double frictionCoeff = 0.5;
+    double frictionCoeff = 1;
     std::vector<KDL::Frame> contacts(4);
     contacts.at(0).p = KDL::Vector(-0.02, 0.02,-0.02);
     contacts.at(1).p = KDL::Vector(0.02, 0.02,-0.02);
@@ -254,7 +254,7 @@ int main(int argc, char **argv)
     end_position << init_cart_pose.p.x(), -init_cart_pose.p.y(), init_cart_pose.p.z();
 
     // Plan trajectory
-    double traj_duration = 2, acc_duration = 1, t = 0.0, init_time_slot = 0.0;
+    double traj_duration = 0.5, acc_duration = 0.1, t = 0.0, init_time_slot = 0.0;
     KDLPlanner planner(traj_duration, acc_duration, init_position, end_position);
     trajectory_point p = planner.compute_trajectory(t);
 
@@ -329,13 +329,14 @@ int main(int argc, char **argv)
 #endif //USE_SHARED_CNTR
 
 #if USE_JNT_ID
-//            // inverse kinematics
-//            des_pose=des_pose*j_T_ee.Inverse();
-//            qd.data << jnt_pos[0], jnt_pos[1], jnt_pos[2], jnt_pos[3], jnt_pos[4], jnt_pos[5], jnt_pos[6];
-//            robot.getInverseKinematics(des_pose,des_cart_vel,des_cart_acc,qd,dqd,ddqd);
+            // inverse kinematics
 
-//            // joint space inverse dynamics control
-//            tau = controller_.idCntr(qd, dqd, ddqd, Kp, Kd);
+            // des_pose = robot.getEEObj()*des_pose;
+            // qd.data << jnt_pos[0], jnt_pos[1], jnt_pos[2], jnt_pos[3], jnt_pos[4], jnt_pos[5], jnt_pos[6];
+            // robot.getInverseKinematics(des_pose,des_cart_vel,des_cart_acc,qd,dqd,ddqd);
+
+            // joint space inverse dynamics control
+            // tau = controller_.idCntr(qd, dqd, ddqd, Kp, Kd);
 #else
             double Kp = 1000;
             double Ko = 1000;

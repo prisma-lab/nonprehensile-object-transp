@@ -21,9 +21,9 @@ public:
     double getTheta() const;
 
     void setFrame(const KDL::Frame &value);
+    void setMu(const double _mu);
     void setWrench(const KDL::Wrench &value);
     void setTwist(const KDL::Twist &value);
-
 
 private:
 
@@ -65,7 +65,7 @@ public:
     void setContactWrenches(const std::vector<KDL::Wrench> &value);
     void setContactTwists(const std::vector<KDL::Twist> &value);
 
-    void addContact(const KDL::Frame &F_bc);
+    void addContact(const KDL::Frame &F_bc, const double _mu);
     void computeContactForces(KDL::Wrench &F_b);
     void computeContactVelocities(KDL::Twist &V_b);
     void computeC();

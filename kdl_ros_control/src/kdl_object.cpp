@@ -58,6 +58,20 @@ void Contact::setTwist(const KDL::Twist &value)
 {
     T_ = value;
 }
+void Contact::setMu(const double value)
+{
+    mu_ = value;
+    theta_ = std::atan(mu_);
+    z_hat_ = Eigen::Vector3d(0,0,1);
+    KDL::Vector fhat1 = KDL::Rot(KDL::Vector( theta_,0,0))*KDL::Vector(0,0,1);
+    KDL::Vector fhat2 = KDL::Rot(KDL::Vector(-theta_,0,0))*KDL::Vector(0,0,1);
+    KDL::Vector fhat3 = KDL::Rot(KDL::Vector(0, theta_,0))*KDL::Vector(0,0,1);
+    KDL::Vector fhat4 = KDL::Rot(KDL::Vector(0,-theta_,0))*KDL::Vector(0,0,1);
+    Fc_hat_.block(0,0,3,1) = toEigen(fhat1);
+    Fc_hat_.block(0,1,3,1) = toEigen(fhat2);
+    Fc_hat_.block(0,2,3,1) = toEigen(fhat3);
+    Fc_hat_.block(0,3,3,1) = toEigen(fhat4);
+}
 
 Eigen::Matrix<double, 6, 3> Contact::getBo() const
 {
@@ -69,9 +83,10 @@ double Contact::getTheta() const
     return theta_;
 }
 
-void KDLObject::addContact(const KDL::Frame &F_bc)
+void KDLObject::addContact(const KDL::Frame &F_bc, const double mu)
 {
     Contact c;
+    c.setMu(mu);
     c.setFrame(F_bc);
     contacts_.push_back(c);
 
@@ -98,7 +113,7 @@ KDLObject::KDLObject(double &m, Eigen::Matrix3d &I, std::vector<KDL::Frame> &c, 
 
     G_.setZero();
     for (unsigned int i = 0; i < c.size(); i++)
-        addContact(c.at(i));
+        addContact(c.at(i), mu);
 
     std::cout << "Object created " << std::endl;
     std::cout << "Grasp matrix: " << std::endl;
@@ -146,15 +161,15 @@ void KDLObject::computeContactForces(KDL::Wrench &F_b)
     // linear constraints
     Eigen::Matrix<double,34,35> A_eigen;
     A_eigen.setZero();
-    A_eigen.block(0,0,6,6) = Eigen::Matrix<double,6,6>::Identity();
-    A_eigen.block(0,6,6,12) = G_;
+    A_eigen.block(0,0,6,6)   = Eigen::Matrix<double,6,6>::Identity();
+    A_eigen.block(0,6,6,12)  = G_;
     A_eigen.block(6,6,12,12) = -Eigen::Matrix<double,12,12>::Identity();
-    A_eigen.block(6,18,3,4) = contacts_.at(0).getConeVersors();
-    A_eigen.block(9,22,3,4) = contacts_.at(0).getConeVersors();
+    A_eigen.block(6,18,3,4)  = contacts_.at(0).getConeVersors();
+    A_eigen.block(9,22,3,4)  = contacts_.at(0).getConeVersors();
     A_eigen.block(12,26,3,4) = contacts_.at(0).getConeVersors();
     A_eigen.block(15,30,3,4) = contacts_.at(0).getConeVersors();
     A_eigen.block(18,18,16,16) = Eigen::Matrix<double,16,16>::Identity();
-    A_eigen.block(0,34,6,1) = toEigen(F_b);
+    A_eigen.block(0,34,6,1)  = toEigen(F_b);
 
     for (unsigned int i = 0; i < A_eigen.rows(); i++ ){
         if (i < 18)
