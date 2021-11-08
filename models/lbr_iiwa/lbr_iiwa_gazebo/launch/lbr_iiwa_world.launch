@@ -33,7 +33,7 @@
   -J lbr_iiwa_joint_4 -1.2
   -J lbr_iiwa_joint_5 1.57
   -J lbr_iiwa_joint_6 -1.57
-  -J lbr_iiwa_joint_7 0.0 "/>
+  -J lbr_iiwa_joint_7 -0.37 "/>
 
 
 </launch>

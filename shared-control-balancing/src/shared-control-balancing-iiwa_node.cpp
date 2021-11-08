@@ -27,8 +27,7 @@
 // Global variables
 std::vector<double> jnt_pos(7,0.0), jnt_vel(7,0.0), obj_pos(6,0.0),  obj_vel(6,0.0);
 bool robot_state_available = false, obj_state_available = false;
-double obj_mass;
-Eigen::Matrix3d obj_inertia = Eigen::Matrix3d::Identity();
+double obj_mass; Eigen::Matrix3d obj_inertia = Eigen::Matrix3d::Identity();
 
 // Functions
 KDLRobot createRobot(ros::NodeHandle &_n)
@@ -43,14 +42,13 @@ KDLRobot createRobot(ros::NodeHandle &_n)
     return robot;
 }
 
-
 // Callbacks
 void objectStateCallback(const gazebo_msgs::LinkStates & msg)
 {
     obj_pos.clear();
     obj_vel.clear();
 
-    obj_pos.push_back(msg.pose[1].position.x);
+    obj_pos.push_back(msg.pose[1].position.x); 
     obj_pos.push_back(msg.pose[1].position.y);
     obj_pos.push_back(msg.pose[1].position.z);
     obj_pos.push_back(msg.pose[1].orientation.x);
@@ -101,6 +99,8 @@ int main(int argc, char **argv)
     ros::Publisher joint5_effort_pub = n.advertise<std_msgs::Float64>("/lbr_iiwa/lbr_iiwa_joint_5_effort_controller/command", 1);
     ros::Publisher joint6_effort_pub = n.advertise<std_msgs::Float64>("/lbr_iiwa/lbr_iiwa_joint_6_effort_controller/command", 1);
     ros::Publisher joint7_effort_pub = n.advertise<std_msgs::Float64>("/lbr_iiwa/lbr_iiwa_joint_7_effort_controller/command", 1);
+
+    // Services
     ros::ServiceClient obj_set_state_srv = n.serviceClient<gazebo_msgs::SetLinkState>("/gazebo/set_link_state");
     ros::ServiceClient des_pose_set_state_srv = n.serviceClient<gazebo_msgs::SetLinkState>("/gazebo/set_link_state");
     ros::ServiceClient obj_get_dyn_srv = n.serviceClient<gazebo_msgs::GetLinkProperties>("/gazebo/get_link_properties");
@@ -112,13 +112,6 @@ int main(int argc, char **argv)
     // Messages
     std_msgs::Float64 tau1_msg, tau2_msg, tau3_msg, tau4_msg, tau5_msg, tau6_msg, tau7_msg;
 
-    // Services
-//    std_srvs::Empty reset_simulation_srv;
-//    if(resetGazeboSimulation.call(reset_simulation_srv))
-//        ROS_INFO("Reset simulation.");
-//    else
-//        ROS_INFO("Failed to reset simulation.");
-
     gazebo_msgs::SetLinkState obj_init_state;
     obj_init_state.request.link_state.link_name = "lbr_iiwa::cuboid_link";
     obj_init_state.request.link_state.twist.linear.x = 0.0;
@@ -128,8 +121,8 @@ int main(int argc, char **argv)
     obj_init_state.request.link_state.twist.angular.y = 0.0;
     obj_init_state.request.link_state.twist.angular.z = 0.0;
     obj_init_state.request.link_state.reference_frame = "world";
-    obj_init_state.request.link_state.pose.position.x = 0.594973; // 0.564973;
-    obj_init_state.request.link_state.pose.position.y = -0.312973; // 0.372973
+    obj_init_state.request.link_state.pose.position.x = 0.594973;
+    obj_init_state.request.link_state.pose.position.y = -0.312973;
     obj_init_state.request.link_state.pose.position.z = 0.522153;
     obj_init_state.request.link_state.pose.orientation.x = 0.0;
     obj_init_state.request.link_state.pose.orientation.y = 0.0;
@@ -138,21 +131,6 @@ int main(int argc, char **argv)
         ROS_INFO("Object state set.");
     else
         ROS_INFO("Failed to set object state.");
-
-    /*gazebo_msgs::SetLinkState des_pose_init_state;
-    des_pose_init_state.request.link_state.link_name = "lbr_iiwa::cuboid_link";
-    des_pose_init_state.request.link_state.reference_frame = "world";
-    des_pose_init_state.request.link_state.pose.position.x = 0.594973; // 0.564973;
-    des_pose_init_state.request.link_state.pose.position.y = -0.312973; // 0.372973
-    des_pose_init_state.request.link_state.pose.position.z = 0.522153;
-    des_pose_init_state.request.link_state.pose.orientation.x = 0.0;
-    des_pose_init_state.request.link_state.pose.orientation.y = 0.0;
-    des_pose_init_state.request.link_state.pose.orientation.z = 0.0;
-    if(des_pose_set_state_srv.call(des_pose_init_state))
-        ROS_INFO("Desired pose state set.");
-    else
-        ROS_INFO("Failed to set desired pose state.");
-    */
     
     gazebo_msgs::SetModelConfiguration robot_init_config;
     robot_init_config.request.model_name = "lbr_iiwa";
@@ -199,23 +177,20 @@ int main(int argc, char **argv)
 
     std_srvs::Empty pauseSrv;
 
-
-    // Wait for robot and object state
-    // unpauseGazebo.call(pauseSrv);
+    // Wait for robot and object state (press play in simulation)
     while(!robot_state_available || !obj_state_available)
     {
         ROS_INFO_STREAM_ONCE("Robot/object state not available yet.");
         ROS_INFO_STREAM_ONCE("Please start gazebo simulation.");
         ros::spinOnce();
     }
-    pauseGazebo.call(pauseSrv);
 
     // Create robot
     KDLRobot robot = createRobot(n);
     robot.update(jnt_pos, jnt_vel);
 
-    // Add end-effector
-    KDL::Frame f_T_ee = KDL::Frame::Identity(); f_T_ee.p[2] = 0.016; // plate height
+    // Add end-effector (set the EE reference frame at the center of the tray)
+    KDL::Frame f_T_ee = KDL::Frame::Identity(); f_T_ee.p[2] = 0.016; // tray height
     robot.addEE(f_T_ee);
 
     // Create object
@@ -226,10 +201,8 @@ int main(int argc, char **argv)
     contacts.at(2).p = KDL::Vector(0.02,-0.02,-0.02);
     contacts.at(3).p = KDL::Vector(-0.02,-0.02,-0.02);
     KDLObject obj(obj_mass, obj_inertia, contacts, frictionCoeff);
-    std::cout << toEigen(obj.getFrame().M) << std::endl;
     KDL::Wrench Fb(obj.getFrame().M.Inverse()*KDL::Vector(0,0,9.81*obj_mass), KDL::Vector(0,0,0));
     obj.computeContactForces(Fb);
-
     obj.setFrame(toKDL(obj_pos));
 
     // Add object
@@ -245,22 +218,22 @@ int main(int argc, char **argv)
     // Update robot
     robot.update(jnt_pos, jnt_vel);
 
-    // Initial object frame
+    // Object's trajectory initial position
     KDL::Frame init_cart_pose = obj.getFrame();
     Eigen::Vector3d init_position(init_cart_pose.p.data);
 
-    // Final object frame
+    // Object trajectory end position
     Eigen::Vector3d end_position;
     end_position << init_cart_pose.p.x(), -init_cart_pose.p.y(), init_cart_pose.p.z();
 
     // Plan trajectory
-    double traj_duration = 0.5, acc_duration = 0.1, t = 0.0, init_time_slot = 0.0;
-    KDLPlanner planner(traj_duration, acc_duration, init_position, end_position);
+    double traj_duration = 1.5, acc_duration = 0.5, t = 0.0, init_time_slot = 0.0;
+    KDLPlanner planner(traj_duration, acc_duration, init_position, end_position); // currently using trapezoidal velocity profile
+    
+    // Retrieve the first trajectory point
     trajectory_point p = planner.compute_trajectory(t);
 
-    //momentumEstimator est(5.0, robot.getNrJnts());
-
-    // Create controller
+    // Init controller
     KDLController controller_(robot, obj);
 
     // Gains
@@ -272,28 +245,23 @@ int main(int argc, char **argv)
                              obj_init_state.request.link_state.pose.position.z);
 
 #if SAVE_DATA
-    std::string robot_file_name = "robot_" + std::to_string(i*spatial_step) + "_" + std::to_string(j*spatial_step) + ".txt";
-    std::string path_file_name = "path_" + std::to_string(i*spatial_step) + "_" + std::to_string(j*spatial_step) + ".txt";
-    std::string obj_file_name = "obj_" + std::to_string(i*spatial_step) + "_" + std::to_string(j*spatial_step) + ".txt";
 
-    std::ofstream robot_file(robot_file_name);
-    std::ofstream path_file(path_file_name);
-    std::ofstream obj_file(obj_file_name);
+    // init output files
+    std::string robot_file_name = "robot.txt"; std::ofstream robot_file(robot_file_name);
+    std::string path_file_name = "path.txt"; std::ofstream path_file(path_file_name);
+    std::string obj_file_name = "obj.txt"; std::ofstream obj_file(obj_file_name);
+
 #endif
-    // Reset robot/object state
-    // unpauseGazebo.call(pauseSrv);
-
-//    robot_state_available = false;
-//    while(!robot_state_available)
-//        ros::spinOnce();
 
     // Retrieve initial simulation time
     ros::Time begin = ros::Time::now();
     ROS_INFO_STREAM_ONCE("Starting control loop ...");
 
+    // Init trajectory
+    KDL::Frame des_pose = KDL::Frame::Identity(); KDL::Twist des_cart_vel = KDL::Twist::Zero(), des_cart_acc = KDL::Twist::Zero();
+
     while ((ros::Time::now()-begin).toSec() < 2*traj_duration + init_time_slot)
     {
-        //unpauseGazebo.call(pauseSrv);
         if (robot_state_available)
         {
             // Update robot
@@ -303,8 +271,8 @@ int main(int argc, char **argv)
             t = (ros::Time::now()-begin).toSec();
 
             // Extract desired pose
-            KDL::Frame des_pose = KDL::Frame::Identity();
-            KDL::Twist des_cart_vel = KDL::Twist::Zero(), des_cart_acc = KDL::Twist::Zero();
+            des_cart_vel = KDL::Twist::Zero();
+            des_cart_acc = KDL::Twist::Zero();
             if (t < init_time_slot) // wait a second
             {
                 p = planner.compute_trajectory(0.0);
@@ -312,8 +280,6 @@ int main(int argc, char **argv)
             else if(t > init_time_slot && t <= traj_duration + init_time_slot)
             {
                 p = planner.compute_trajectory(t-init_time_slot);
-//                double x = p.pos.x()+ 0.1*sin(2*t);
-//                p.pos.x() = x;
                 des_cart_vel = KDL::Twist(KDL::Vector(p.vel[0], p.vel[1], p.vel[2]),KDL::Vector::Zero());
                 des_cart_acc = KDL::Twist(KDL::Vector(p.acc[0], p.acc[1], p.acc[2]),KDL::Vector::Zero());
             }
@@ -325,7 +291,7 @@ int main(int argc, char **argv)
             des_pose.p = KDL::Vector(p.pos[0],p.pos[1],p.pos[2]);
 
 #if USE_SHARED_CNTR
-            tau = controller_.sharedCntr(des_pose, des_cart_vel, des_cart_acc, Kp, Kd);
+            tau = controller_.sharedCntr(des_pose, des_cart_vel, des_cart_acc, Kp, Kd, true);
 #endif //USE_SHARED_CNTR
 
 #if USE_JNT_ID
@@ -432,20 +398,8 @@ int main(int argc, char **argv)
             std::cout << "current_pose: " << std::endl << robot.getCartesianPose() << std::endl;
 #endif
 
-            /*des_pose_init_state.request.link_state.pose.position.x = p.pos.x();
-            des_pose_init_state.request.link_state.pose.position.y = p.pos.y();
-            des_pose_init_state.request.link_state.pose.position.z = p.pos.z();
-            if(des_pose_set_state_srv.call(des_pose_init_state))
-                ROS_INFO("Desired pose state set.");
-            else
-                ROS_INFO("Failed to set desired pose state.");
-            */
-            
             ros::spinOnce();
             loop_rate.sleep();
-            // pauseGazebo.call(pauseSrv);
-            // int n;
-            // std::cin >> n;
         }
     }
     if(pauseGazebo.call(pauseSrv))
@@ -453,32 +407,5 @@ int main(int argc, char **argv)
     else
         ROS_INFO("Failed to pause simulation.");
 
-
     return 0;
 }
-
-
-//    std::vector<KDL::Frame> trajectory_frames;
-//    KDL::Frame frame_1 = KDL::Frame(KDL::Rotation::EulerZYX(0,0,0),KDL::Vector(0.45,0.2,0.5));
-//    KDL::Frame frame_2 = KDL::Frame(KDL::Rotation::EulerZYX(0,1.57,0),KDL::Vector(0.65,0.2,0.5));
-//    KDL::Frame frame_3 = KDL::Frame(KDL::Rotation::EulerZYX(0,0,0),KDL::Vector(0.65,-0.2,0.5));
-//    trajectory_frames.push_back(frame_1);
-//    trajectory_frames.push_back(frame_2);
-//    trajectory_frames.push_back(frame_3);
-//    planner.CreateTrajectoryFromFrames(trajectory_frames,0.1,0.1);
-
-//    KDL::Vector center(0.0,0.0,init_cart_pose.p.z());
-//    KDL::Frame end_cart_pose = KDL::Frame(
-//                init_cart_pose.M,
-//                KDL::Vector(init_cart_pose.p.x(),
-//                            -init_cart_pose.p.y(),
-//                            init_cart_pose.p.z()));
-//    planner.createCircPath(init_cart_pose,
-//                           center,
-//                           end_cart_pose.p,
-//                           end_cart_pose.M,
-//                           1.57,
-//                           0.02);
-// trajectory_point p = planner.compute_trajectory(0.0,4.0,1.0,init_position,end_position);
-//    KDL::Trajectory* traj;
-//    traj = planner.getTrajectory();
