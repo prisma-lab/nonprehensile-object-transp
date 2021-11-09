@@ -10,7 +10,8 @@ Eigen::VectorXd KDLController::sharedCntr(KDL::Frame &_desObjPos,
                                           KDL::Twist &_desObjVel,
                                           KDL::Twist &_desObjAcc,
                                           double &Kp,
-                                          double &Kd)
+                                          double &Kd,
+                                          bool _useTilting)
 {
     // std::cout << "_desObjVelRot: " << _desObjVel.rot << std::endl << "_desObjVel: " << _desObjVel.vel << std::endl;
     // std::cout << "_desObjAccRot: " << _desObjAcc.rot << std::endl << "_desObjAcc: " << _desObjAcc.vel << std::endl;
@@ -24,7 +25,8 @@ Eigen::VectorXd KDLController::sharedCntr(KDL::Frame &_desObjPos,
     KDL::Wrench F_b = obj_->computeID();
 
     double cost;
-    // e.block(3,0,3,1) = tiltingTorque(cost, 2, 1e-2);
+    if(_useTilting)
+        e.block(3,0,3,1) = tiltingTorque(cost, 2, 1e-2);
 
     std::cout << "F_b ID: " << toEigen(F_b).transpose() << std::endl;
     Eigen::Matrix<double, 6, 1> y = obj_->getMassMatrix()*(spatialRotation(obj_->getFrame().M.Inverse())*toEigen(_desObjAcc) +
