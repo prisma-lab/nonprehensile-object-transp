@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>shared-control-balancing</name>
+  <name>nonprehensile-object-transp-iiwa</name>
   <version>0.0.0</version>
-  <description>The shared-control-balancing package</description>
+  <description>The nonprehensile-object-transp-iiwa package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

@@ -52,6 +52,6 @@ The code was tested with Ubuntu 20.04, and ROS Noetic. Different OS and ROS vers
 
 `roslaunch lbr_iiwa_launch lbr_iiwa_gazebo_effort_control.launch`
 
-`rosrun shared-control-balancing shared-control-balancing-iiwa_node`
+`rosrun nonprehensile-object-transp-iiwa nonprehensile-object-transp-iiwa_node`
 
 Press play in gazebo to start the simulation
