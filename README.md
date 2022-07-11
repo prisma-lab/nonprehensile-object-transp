@@ -4,7 +4,7 @@ Implementation of the nonprehensile object transportation method developed in th
 
 *[M. Selvaggio](http://wpage.unina.it/mario.selvaggio/index.html), [A. Garg](), [F. Ruggiero](http://www.fabioruggiero.name/web/index.php/en/), [G. Oriolo](http://www.diag.uniroma1.it/oriolo/), [B. Siciliano](http://wpage.unina.it/sicilian/) "Nonprehensile Object Transportation via Model Predictive Non-sliding Manipulation Control", in IEEE Transactions on Control System Technology, submitted.* 
 
-Click [here](https://drive.google.com/drive/folders/11hQ4Z3XOTS8MEUuJeJqHemA5ji6RHAVK?usp=sharing) to download the video. 
+Click [here](https://drive.google.com/file/d/1pDFe3oAbin2tiXUtQ4NnW8qb8oiG1Kpb/view?usp=sharing) to watch the video. 
 
 [![Nonprehensile object transportation](rodyman.png)](https://drive.google.com/file/d/1pDFe3oAbin2tiXUtQ4NnW8qb8oiG1Kpb/view?usp=sharing)
 
