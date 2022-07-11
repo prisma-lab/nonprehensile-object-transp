@@ -4,7 +4,9 @@ Implementation of the nonprehensile object transportation method developed in th
 
 *[M. Selvaggio](http://wpage.unina.it/mario.selvaggio/index.html), [A. Garg](), [F. Ruggiero](http://www.fabioruggiero.name/web/index.php/en/), [G. Oriolo](http://www.diag.uniroma1.it/oriolo/), [B. Siciliano](http://wpage.unina.it/sicilian/) "Nonprehensile Object Transportation via Model Predictive Non-sliding Manipulation Control", in IEEE Transactions on Control System Technology, submitted.* 
 
-[![Nonprehensile object transportation](rodyman.png)](dda)
+Click [here](https://drive.google.com/drive/folders/11hQ4Z3XOTS8MEUuJeJqHemA5ji6RHAVK?usp=sharing) to download the video. 
+
+[![Nonprehensile object transportation](rodyman.png)](https://drive.google.com/file/d/1pDFe3oAbin2tiXUtQ4NnW8qb8oiG1Kpb/view?usp=sharing)
 
 *[M. Selvaggio](http://wpage.unina.it/mario.selvaggio/index.html), [J. Cacace](http://wpage.unina.it/jonathan.cacace/), [C. Pacchierotti](https://team.inria.fr/rainbow/fr/team/claudio-pacchierotti/), [F. Ruggiero](http://www.fabioruggiero.name/web/index.php/en/), [P. Robuffo Giordano](https://team.inria.fr/rainbow/fr/team/prg/), "[A Shared-control Teleoperation Architecture for Nonprehensile Object Transportation](http://wpage.unina.it/mario.selvaggio/papers/tro2021.pdf)", in IEEE Transactions on Robotics, vol. 38, no. 1, pp. 569-583, Feb. 2022, doi: 10.1109/TRO.2021.3086773.* 
 
