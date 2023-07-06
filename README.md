@@ -14,6 +14,18 @@ Click [here](https://www.youtube.com/watch?v=H14NDnmpcNg) to watch the video.
 
 ### Citing
 ```
+@ARTICLE{SelvaggioTCST2023,
+  author={Selvaggio, Mario and Garg, Akash and Ruggiero, Fabio and Oriolo, Giuseppe and Siciliano, Bruno},
+  journal={IEEE Transactions on Control Systems Technology}, 
+  title={Non-Prehensile Object Transportation via Model Predictive Non-Sliding Manipulation Control}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={1-14},
+  doi={10.1109/TCST.2023.3277224}}
+```
+
+```
 @article{SelvaggioTRO2021,
   author={Selvaggio, Mario and Cacace, Jonathan and Pacchierotti, Claudio and Ruggiero, Fabio and Giordano, Paolo Robuffo},
   journal={IEEE Transactions on Robotics}, 
