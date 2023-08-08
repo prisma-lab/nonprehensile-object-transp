@@ -178,10 +178,14 @@ int main(int argc, char **argv)
     std_srvs::Empty pauseSrv;
 
     // Wait for robot and object state (press play in simulation)
-    while(!robot_state_available || !obj_state_available)
+    // Wait for robot and object state
+    while (!(robot_state_available && obj_state_available))
     {
         ROS_INFO_STREAM_ONCE("Robot/object state not available yet.");
         ROS_INFO_STREAM_ONCE("Please start gazebo simulation.");
+        if (!(robot_set_state_srv.call(robot_init_config) && obj_set_state_srv.call(obj_init_state)))
+            ROS_INFO("Failed to set robot/object state.");            
+        
         ros::spinOnce();
     }
 
