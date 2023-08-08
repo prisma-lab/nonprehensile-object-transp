@@ -9,8 +9,8 @@ KDLController::KDLController(KDLRobot &_robot, KDLObject &_obj)
 Eigen::VectorXd KDLController::sharedCntr(KDL::Frame &_desObjPos,
                                           KDL::Twist &_desObjVel,
                                           KDL::Twist &_desObjAcc,
-                                          double &Kp,
-                                          double &Kd,
+                                          double Kp,
+                                          double Kd,
                                           bool _useTilting)
 {
     // std::cout << "_desObjVelRot: " << _desObjVel.rot << std::endl << "_desObjVel: " << _desObjVel.vel << std::endl;

@@ -30,8 +30,9 @@ public:
     Eigen::VectorXd sharedCntr(KDL::Frame &_desObjPos,
                            KDL::Twist &_desObjVel,
                            KDL::Twist &_desObjAcc,
-                           double &Kp,
-                           double &Kd);
+                           double Kp,
+                           double Kd,
+                           bool _useTilting);
 
 private:
 
